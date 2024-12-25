@@ -206,6 +206,7 @@ declare global {
       coursePrice: string;
       courseStatus: boolean;
     }
+
   }
   
   export {};
