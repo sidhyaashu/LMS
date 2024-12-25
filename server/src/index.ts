@@ -1,8 +1,8 @@
-import * as express from "express"
-import * as dotenv from "dotenv"
-import * as cors from "cors"
-import * as bodyParser from "body-parser"
-import * as morgan from "morgan"
+import express from "express"
+import dotenv from "dotenv"
+import cors from "cors"
+import bodyParser from "body-parser"
+import morgan from "morgan"
 import helmet from "helmet"
 import * as dynamoose from "dynamoose"
 // import serverless from "serverless-http";
