@@ -38,7 +38,7 @@ if (!isProduction) {
 const originalWarn = console.warn.bind(console);
 console.warn = (message, ...args) => {
   if (
-    !message.includes("Tagging is not currently supported in DynamoDB Local")
+      !message.includes("Tagging is not currently supported in DynamoDB Local")
   ) {
     originalWarn(message, ...args);
   }
@@ -62,9 +62,9 @@ async function createTables() {
       console.log(`Table created and initialized: ${tableName}`);
     } catch (error: any) {
       console.error(
-        `Error creating table ${tableName}:`,
-        error.message,
-        error.stack
+          `Error creating table ${tableName}:`,
+          error.message,
+          error.stack
       );
     }
   }
@@ -72,11 +72,11 @@ async function createTables() {
 
 async function seedData(tableName: string, filePath: string) {
   const data: { [key: string]: any }[] = JSON.parse(
-    fs.readFileSync(filePath, "utf8")
+      fs.readFileSync(filePath, "utf8")
   );
 
   const formattedTableName = pluralize.singular(
-    tableName.charAt(0).toUpperCase() + tableName.slice(1)
+      tableName.charAt(0).toUpperCase() + tableName.slice(1)
   );
 
   console.log(`Seeding data to table: ${formattedTableName}`);
@@ -86,15 +86,15 @@ async function seedData(tableName: string, filePath: string) {
       await dynamoose.model(formattedTableName).create(item);
     } catch (err) {
       console.error(
-        `Unable to add item to ${formattedTableName}. Error:`,
-        JSON.stringify(err, null, 2)
+          `Unable to add item to ${formattedTableName}. Error:`,
+          JSON.stringify(err, null, 2)
       );
     }
   }
 
   console.log(
-    "\x1b[32m%s\x1b[0m",
-    `Successfully seeded data to table: ${formattedTableName}`
+      "\x1b[32m%s\x1b[0m",
+      `Successfully seeded data to table: ${formattedTableName}`
   );
 }
 
@@ -131,8 +131,8 @@ export default async function seed() {
 
   const seedDataPath = path.join(__dirname, "./data");
   const files = fs
-    .readdirSync(seedDataPath)
-    .filter((file) => file.endsWith(".json"));
+      .readdirSync(seedDataPath)
+      .filter((file) => file.endsWith(".json"));
 
   for (const file of files) {
     const tableName = path.basename(file, ".json");

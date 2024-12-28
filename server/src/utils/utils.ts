@@ -1,10 +1,10 @@
 import path from "path";
 
 export const updateCourseVideoInfo = (
-  course: any,
-  sectionId: string,
-  chapterId: string,
-  videoUrl: string
+    course: any,
+    sectionId: string,
+    chapterId: string,
+    videoUrl: string
 ) => {
   const section = course.sections?.find((s: any) => s.sectionId === sectionId);
   if (!section) {
@@ -50,14 +50,14 @@ export const getContentType = (filename: string) => {
 
 // Preserved HLS/DASH upload logic for future use
 export const handleAdvancedVideoUpload = async (
-  s3: any,
-  files: any,
-  uniqueId: string,
-  bucketName: string
+    s3: any,
+    files: any,
+    uniqueId: string,
+    bucketName: string
 ) => {
   const isHLSOrDASH = files.some(
-    (file: any) =>
-      file.originalname.endsWith(".m3u8") || file.originalname.endsWith(".mpd")
+      (file: any) =>
+          file.originalname.endsWith(".m3u8") || file.originalname.endsWith(".mpd")
   );
 
   if (isHLSOrDASH) {
@@ -65,21 +65,21 @@ export const handleAdvancedVideoUpload = async (
     const uploadPromises = files.map((file: any) => {
       const s3Key = `videos/${uniqueId}/${file.originalname}`;
       return s3
-        .upload({
-          Bucket: bucketName,
-          Key: s3Key,
-          Body: file.buffer,
-          ContentType: getContentType(file.originalname),
-        })
-        .promise();
+          .upload({
+            Bucket: bucketName,
+            Key: s3Key,
+            Body: file.buffer,
+            ContentType: getContentType(file.originalname),
+          })
+          .promise();
     });
     await Promise.all(uploadPromises);
 
     // Determine manifest file URL
     const manifestFile = files.find(
-      (file: any) =>
-        file.originalname.endsWith(".m3u8") ||
-        file.originalname.endsWith(".mpd")
+        (file: any) =>
+            file.originalname.endsWith(".m3u8") ||
+            file.originalname.endsWith(".mpd")
     );
     const manifestFileName = manifestFile?.originalname || "";
     const videoType = manifestFileName.endsWith(".m3u8") ? "hls" : "dash";
@@ -94,8 +94,8 @@ export const handleAdvancedVideoUpload = async (
 };
 
 export const mergeSections = (
-  existingSections: any[],
-  newSections: any[]
+    existingSections: any[],
+    newSections: any[]
 ): any[] => {
   const existingSectionsMap = new Map<string, any>();
   for (const existingSection of existingSections) {
@@ -118,8 +118,8 @@ export const mergeSections = (
 };
 
 export const mergeChapters = (
-  existingChapters: any[],
-  newChapters: any[]
+    existingChapters: any[],
+    newChapters: any[]
 ): any[] => {
   const existingChaptersMap = new Map<string, any>();
   for (const existingChapter of existingChapters) {
@@ -138,14 +138,14 @@ export const mergeChapters = (
 
 export const calculateOverallProgress = (sections: any[]): number => {
   const totalChapters = sections.reduce(
-    (acc: number, section: any) => acc + section.chapters.length,
-    0
+      (acc: number, section: any) => acc + section.chapters.length,
+      0
   );
 
   const completedChapters = sections.reduce(
-    (acc: number, section: any) =>
-      acc + section.chapters.filter((chapter: any) => chapter.completed).length,
-    0
+      (acc: number, section: any) =>
+          acc + section.chapters.filter((chapter: any) => chapter.completed).length,
+      0
   );
 
   return totalChapters > 0 ? (completedChapters / totalChapters) * 100 : 0;
